@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>LlamaAgents Demo</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+            rel="stylesheet"
+        />
+        <link
+            href="https://cdn.jsdelivr.net/npm/daisyui@2.51.6/dist/full.css"
+            rel="stylesheet"
+        />
+    </head>
+    <body class="bg-base-200 min-h-screen flex items-center justify-center p-4">
+        <div class="card w-full max-w-2xl bg-base-100 shadow-xl">
+            <div class="card-body">
+                <h2 class="card-title text-2xl mb-6">File Upload</h2>
+
+                <div class="form-control mb-6">
+                    <label class="label">
+                        <span class="label-text font-semibold"
+                            >Select File Type</span
+                        >
+                    </label>
+                    <div class="flex gap-6">
+                        <div class="form-control">
+                            <label class="label cursor-pointer gap-2">
+                                <input
+                                    type="radio"
+                                    name="fileType"
+                                    value="presentation"
+                                    class="radio radio-primary"
+                                    checked
+                                />
+                                <span class="label-text">Presentation</span>
+                            </label>
+                        </div>
+                        <div class="form-control">
+                            <label class="label cursor-pointer gap-2">
+                                <input
+                                    type="radio"
+                                    name="fileType"
+                                    value="sheet"
+                                    class="radio radio-primary"
+                                />
+                                <span class="label-text">Excel Sheet</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-control mb-6">
+                    <label class="label">
+                        <span class="label-text font-semibold"
+                            >Upload File</span
+                        >
+                    </label>
+                    <input
+                        type="file"
+                        id="fileInput"
+                        class="file-input file-input-bordered file-input-primary w-full"
+                    />
+                </div>
+
+                <div class="card-actions justify-end mt-4">
+                    <button id="submitBtn" class="btn btn-primary btn-wide">
+                        Process File
+                    </button>
+                </div>
+
+                <div id="resultSection" class="mt-8 hidden">
+                    <div class="divider"></div>
+                    <div class="alert alert-success shadow-lg">
+                        <div class="flex-col items-start w-full">
+                            <h3 class="font-bold text-lg mb-2">Result</h3>
+                            <p
+                                id="resultText"
+                                class="text-sm break-words w-full"
+                            ></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="errorSection" class="mt-8 hidden">
+                    <div class="divider"></div>
+                    <div class="alert alert-error shadow-lg">
+                        <div class="flex-col items-start w-full">
+                            <h3 class="font-bold text-lg mb-2">Error</h3>
+                            <p
+                                id="errorText"
+                                class="text-sm break-words w-full"
+                            ></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="/script.js"></script>
+    </body>
+</html>
