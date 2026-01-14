@@ -6,7 +6,9 @@ from .workflow import FileEvent, OutputEvent, workflow
 
 
 async def run_workflow(input_file: str) -> OutputEvent:
-    result = await workflow.run(start_event=FileEvent(file_path=input_file))
+    result = await workflow.run(
+        start_event=FileEvent(file_input=input_file, is_source_content=False)
+    )
     return result
 
 

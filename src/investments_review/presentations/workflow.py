@@ -1,4 +1,7 @@
+import base64
+import io
 import logging
+from datetime import datetime
 from typing import Annotated
 
 from llama_cloud import AsyncLlamaCloud
@@ -34,14 +37,29 @@ class PresentationWorkflow(Workflow):
         logging.info(
             f"Starting to upload presentation file {ev.file_path} to LlamaCloud"
         )
-        file_obj = await llama_cloud_client.files.create(
-            file=ev.file_path,
-            purpose="parse",
-            external_file_id=ev.file_path,
-        )
+        if not ev.is_source_content:
+            file_obj = await llama_cloud_client.files.create(
+                file=ev.file_input,
+                purpose="parse",
+                external_file_id=ev.file_input,
+            )
+        else:
+            decoded = base64.b64decode(ev.file_input)
+            file_input = io.BytesIO(decoded)
+            file_name = (
+                ev.file_name
+                or datetime.now().isoformat().replace(":", "-").replace(".", "-")
+                + ev.file_extension
+            )
+            file_obj = await llama_cloud_client.files.create(
+                file=file_input,
+                purpose="parse",
+                external_file_id=file_name,
+            )
         async with ctx.store.edit_state() as state:
             state.file_id = file_obj.id
         event = FileUploadedEvent(file_id=file_obj.id)
+        ctx.write_event_to_stream(event)
         logging.info(
             f"Finished uploading presentation file {ev.file_path} to LlamaCloud"
         )
@@ -67,10 +85,12 @@ class PresentationWorkflow(Workflow):
                 "Classification type should not be None"
             )
             logging.info(f"Classified document as: {result_item.result.type}")
-            return ClassificationEvent(
+            event = ClassificationEvent(
                 category=result_item.result.type,
                 reasons=result_item.result.reasoning,
             )
+            ctx.write_event_to_stream(event)
+            return event
         else:
             return ExtractionEvent(error="Could not produce a classification")
 

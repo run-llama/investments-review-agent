@@ -1,4 +1,7 @@
+import base64
+import io
 import logging
+from datetime import datetime
 from typing import Annotated
 
 import httpx
@@ -39,12 +42,27 @@ class SheetWorkflow(Workflow):
         ],
     ) -> FileUploadedEvent:
         logging.info(f"Starting to upload excel sheet {ev.file_path} to LlamaCloud")
-        file_obj = await llama_cloud_client.files.create(
-            file=ev.file_path,
-            purpose="parse",
-            external_file_id=ev.file_path,
-        )
+        if not ev.is_source_content:
+            file_obj = await llama_cloud_client.files.create(
+                file=ev.file_input,
+                purpose="parse",
+                external_file_id=ev.file_input,
+            )
+        else:
+            decoded = base64.b64decode(ev.file_input)
+            file_input = io.BytesIO(decoded)
+            file_name = (
+                ev.file_name
+                or datetime.now().isoformat().replace(":", "-").replace(".", "-")
+                + ev.file_extension
+            )
+            file_obj = await llama_cloud_client.files.create(
+                file=file_input,
+                purpose="parse",
+                external_file_id=file_name,
+            )
         event = FileUploadedEvent(file_id=file_obj.id)
+        ctx.write_event_to_stream(event)
         logging.info(f"Finished uploading excel sheet {ev.file_path} to LlamaCloud")
         return event
 
@@ -92,7 +110,9 @@ class SheetWorkflow(Workflow):
             return OutputEvent(error="Could not parse sheet file")
 
         if len(file_paths) > 0:
-            return SheetParsedEvent(parquet_files=file_paths)
+            event = SheetParsedEvent(parquet_files=file_paths)
+            ctx.write_event_to_stream(event)
+            return event
         return OutputEvent(error="Could not retrieve any parquet file")
 
     @step
@@ -112,7 +132,9 @@ class SheetWorkflow(Workflow):
                 logging.error(f"Could not load {file} because of {e}. Skipping...")
         logging.info("Finished converting Parquet files to markdown tables")
         if len(tables) > 0:
-            return TableTransformationEvent(markdown_tables=tables)
+            event = TableTransformationEvent(markdown_tables=tables)
+            ctx.write_event_to_stream(event)
+            return event
 
         return OutputEvent(error="Could not transform any of the parquet files")
 

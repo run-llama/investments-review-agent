@@ -50,7 +50,9 @@ async def sheets_workflow_route(request: Request) -> JSONResponse:
             with open(tempfile.name, "wb") as f:
                 f.write(file_content)
             try:
-                start_event = FileEvent(file_path=str(tempfile.name))
+                start_event = FileEvent(
+                    file_input=str(tempfile.name), is_source_content=False
+                )
                 run_result = await sheets_workflow.run(start_event=start_event)
                 if run_result.error is None:
                     return JSONResponse(
@@ -98,7 +100,9 @@ async def presentations_workflow_route(request: Request) -> JSONResponse:
             with open(tempfile.name, "wb") as f:
                 f.write(file_content)
             try:
-                start_event = FileEvent(file_path=str(tempfile.name))
+                start_event = FileEvent(
+                    file_input=str(tempfile.name), is_source_content=False
+                )
                 run_result = await presentations_workflow.run(start_event=start_event)
                 if run_result.error is None:
                     return JSONResponse(

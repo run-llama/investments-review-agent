@@ -27,3 +27,15 @@ module-name = "investments_review"
 sheets-wf = "investments_review.sheets.main:main"
 pres-wf = "investments_review.presentations.main:main"
 serve = "investments_review.api:main"
+
+[tool.llamadeploy.workflows]
+presentations = "investments_review.presentations.workflow:workflow"
+sheets = "investments_review.sheets.workflow:workflow"
+
+[tool.llamadeploy.ui]
+directory = "ui"
+
+[tool.llamadeploy]
+name = "investments-review"
+env_files = [".env"]
+llama_cloud = true
