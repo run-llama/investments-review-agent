@@ -1,14 +1,14 @@
-# LlamaCloud Demo for Diversis
+# Financial Documents Assistant
 
-Demo that uses LlamaAgents in combination with LlamaExtract, LlamaClassify and LlamaSheets to showcase the features of LlamaCloud.
+Demo that uses LlamaAgents in combination with LlamaExtract, LlamaClassify and LlamaSheets to showcase the features of LlamaCloud in the fields of financial documents, specifically for what concerns investments spreadsheets and board updates/management presentations.
 
 ## Installation and Usage
 
 Clone the repository:
 
 ```bash
-git clone https://github.com/run-llama/diversis-demo
-cd diversis-demo
+git clone https://github.com/run-llama/financial-assistant-llamaagent
+cd financial-assistant-llamaagent
 ``` 
 
 Install the application:
