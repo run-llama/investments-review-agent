@@ -34,9 +34,7 @@ class PresentationWorkflow(Workflow):
             AsyncLlamaCloud, Resource(get_llama_cloud_client)
         ],
     ) -> FileUploadedEvent:
-        logging.info(
-            f"Starting to upload presentation file {ev.file_path} to LlamaCloud"
-        )
+        logging.info("Starting to upload presentation file to LlamaCloud")
         if not ev.is_source_content:
             file_obj = await llama_cloud_client.files.create(
                 file=ev.file_input,
@@ -60,9 +58,7 @@ class PresentationWorkflow(Workflow):
             state.file_id = file_obj.id
         event = FileUploadedEvent(file_id=file_obj.id)
         ctx.write_event_to_stream(event)
-        logging.info(
-            f"Finished uploading presentation file {ev.file_path} to LlamaCloud"
-        )
+        logging.info("Finished uploading presentation file to LlamaCloud")
         return event
 
     @step

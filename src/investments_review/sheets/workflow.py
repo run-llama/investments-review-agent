@@ -41,7 +41,7 @@ class SheetWorkflow(Workflow):
             AsyncLlamaCloud, Resource(get_llama_cloud_client)
         ],
     ) -> FileUploadedEvent:
-        logging.info(f"Starting to upload excel sheet {ev.file_path} to LlamaCloud")
+        logging.info("Starting to upload excel sheet to LlamaCloud")
         if not ev.is_source_content:
             file_obj = await llama_cloud_client.files.create(
                 file=ev.file_input,
@@ -63,7 +63,7 @@ class SheetWorkflow(Workflow):
             )
         event = FileUploadedEvent(file_id=file_obj.id)
         ctx.write_event_to_stream(event)
-        logging.info(f"Finished uploading excel sheet {ev.file_path} to LlamaCloud")
+        logging.info("Finished uploading excel sheet to LlamaCloud")
         return event
 
     @step

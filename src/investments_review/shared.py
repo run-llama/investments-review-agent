@@ -12,7 +12,7 @@ def get_llama_cloud_client() -> AsyncLlamaCloud:
 class FileEvent(StartEvent):
     file_input: str
     file_name: str | None = None
-    file_extension: Literal["xlsx", "pdf"] = "pdf"
+    file_extension: Literal[".xlsx", ".pdf"] = ".pdf"
     is_source_content: bool
 
 
