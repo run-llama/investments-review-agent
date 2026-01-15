@@ -1,4 +1,4 @@
-# Financial Documents Assistant
+# Investments Review Agent
 
 Demo that uses LlamaAgents in combination with LlamaExtract, LlamaClassify and LlamaSheets to showcase the features of LlamaCloud in the fields of financial documents, specifically for what concerns investments spreadsheets and board updates/management presentations.
 
@@ -7,8 +7,8 @@ Demo that uses LlamaAgents in combination with LlamaExtract, LlamaClassify and L
 Clone the repository:
 
 ```bash
-git clone https://github.com/run-llama/financial-assistant-llamaagent
-cd financial-assistant-llamaagent
+git clone https://github.com/run-llama/investments-review-agent
+cd investments-review-agent
 ``` 
 
 Install the application:
