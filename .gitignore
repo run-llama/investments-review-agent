@@ -21,3 +21,11 @@ node_modules/
 
 # database
 workflows.db
+
+# legacy UI
+script.js
+index.html
+api.py
+
+# caches
+*cache/

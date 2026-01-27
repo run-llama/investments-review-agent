@@ -1,5 +1,4 @@
 import base64
-import io
 import logging
 from datetime import datetime
 from typing import Annotated
@@ -50,12 +49,17 @@ class SheetWorkflow(Workflow):
             )
         else:
             decoded = base64.b64decode(ev.file_input)
-            file_input = io.BytesIO(decoded)
             file_name = (
                 ev.file_name
                 or datetime.now().isoformat().replace(":", "-").replace(".", "-")
                 + ev.file_extension
             )
+            mimetype = (
+                "application/pdf"
+                if ev.file_extension == ".pdf"
+                else "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            )
+            file_input = (file_name, decoded, mimetype)
             file_obj = await llama_cloud_client.files.create(
                 file=file_input,
                 purpose="parse",

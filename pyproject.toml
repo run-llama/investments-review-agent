@@ -26,7 +26,6 @@ module-name = "investments_review"
 [project.scripts]
 sheets-wf = "investments_review.sheets.main:main"
 pres-wf = "investments_review.presentations.main:main"
-serve = "investments_review.api:main"
 
 [tool.llamadeploy.workflows]
 presentations = "investments_review.presentations.workflow:workflow"
@@ -34,6 +33,12 @@ sheets = "investments_review.sheets.workflow:workflow"
 
 [tool.llamadeploy.ui]
 directory = "ui"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.14.14",
+    "ty>=0.0.14",
+]
 
 [tool.llamadeploy]
 name = "investments-review"

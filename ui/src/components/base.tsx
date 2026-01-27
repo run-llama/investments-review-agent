@@ -29,7 +29,18 @@ function BaseComponent() {
 
   return (
     <div className="p-10 space-y-6">
-      <div className="grid w-full max-w-sm items-center gap-3">
+      <div className="space-y-2 mb-8">
+        <h1 className="text-3xl font-bold tracking-tight">
+          Investments Review Agent
+        </h1>
+        <h2 className="text-lg text-muted-foreground">
+          Using LlamaAgents to review investments portfolio spreadsheets or
+          classify and extract details from Board Update Decks and Management
+          Presentations
+        </h2>
+      </div>
+
+      <div className="justify-center flex flex-col w-full mx-auto max-w-sm items-center gap-3">
         <Label htmlFor="workflow">Select Workflow</Label>
         <NativeSelect id="workflow" onChange={handleWorkflowChange}>
           <NativeSelectOption value="">Select a File Type</NativeSelectOption>
@@ -39,8 +50,7 @@ function BaseComponent() {
           </NativeSelectOption>
         </NativeSelect>
       </div>
-
-      <div className="grid w-full max-w-sm items-center gap-3">
+      <div className="justify-center flex flex-col w-full mx-auto max-w-sm items-center gap-3">
         <Label htmlFor="uploadedFile">Upload a File</Label>
         <Input
           id="uploadedFile"
@@ -49,7 +59,6 @@ function BaseComponent() {
           accept={workflowName === "sheets" ? ".xlsx,.xls" : ".pdf"}
         />
       </div>
-
       {workflowName && fileBytes && (
         <div className="mt-10 border p-4 rounded-lg">
           <p className="text-sm text-muted-foreground mb-2">
