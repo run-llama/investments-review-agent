@@ -1,0 +1,38 @@
+name: Linting
+
+on:
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Set up Python
+        run: uv python install 3.12
+
+      - name: Run formatter
+        shell: bash
+        run: make format-check
+
+      - name: Run linter
+        shell: bash
+        run: make lint-check
+
+  lint-ui:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24.4.0"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Lint
+        run: make lint-ui

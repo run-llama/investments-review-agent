@@ -1,9 +1,9 @@
 import logging
+import os
 from mimetypes import guess_extension
 
 import aiofiles
 import uvicorn
-from fsspec.utils import os
 from starlette.applications import Starlette
 from starlette.datastructures import UploadFile
 from starlette.exceptions import HTTPException

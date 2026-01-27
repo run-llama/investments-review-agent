@@ -24,19 +24,28 @@ export OPENAI_API_KEY="..."
 export LLAMA_CLOUD_API_KEY="..."
 ```
 
+Test the workflows with the associated CLI interface to make sure everything works:
+
+```bash
+# test with a PDF presentation
+pres-wf data/Board-Deck-Template.pdf
+# test with an Excel spreadsheet
+sheet-wf data/portfolio.xlsx
+```
+
 Run the server:
 
 ```bash
-serve
+llamactl serve
 ```
 
-Access the application at `http://localhost:8000/`.
+Access the application at `http://localhost:4501/`.
 
 ## How it works
 
 From the frontend of the application, you can choose whether to upload a presentation or an excel sheet.
 
-If you choose 'presentation', you can upload either a Management Presentation or a Board Update Deck:
+If you choose 'PDF Presentation', you can upload either a Management Presentation or a Board Update Deck:
 
 1. The uploaded document will be uploaded to the S3 storage in LlamaCloud
 2. The uploaded document will be classified as either a Management Presentation or a Board Update Deck (LlamaClassify)
@@ -44,7 +53,7 @@ If you choose 'presentation', you can upload either a Management Presentation or
 
 Find an example in [`data/Board-Deck-Template.pdf`](data/Board-Deck-Template.pdf)
 
-If you choose 'excel sheet', you can upload a spreadsheet containing details on an investment portoflio:
+If you choose 'Excel Sheet', you can upload a spreadsheet containing details on an investment portoflio:
 
 - The file will be uploaded to LlamaCloud S3 Storage
 - It will be parsed by LlamaSheets and the data will be extracted and downloaded as parquet files

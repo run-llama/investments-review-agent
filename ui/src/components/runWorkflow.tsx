@@ -53,11 +53,9 @@ export function StreamEvents({
   async function start() {
     setEvents([]);
     const h = await workflow.createHandler({
-      input: {
-        file_input: uint8ArrayToBase64(fileInput),
-        file_extension: fileExtension,
-        is_source_content: true,
-      },
+      file_input: uint8ArrayToBase64(fileInput),
+      file_extension: fileExtension,
+      is_source_content: true,
     });
     setHandlerId(h.handler_id);
   }
@@ -68,7 +66,7 @@ export function StreamEvents({
       onData: (event) => setEvents((prev) => [...prev, event]),
     });
     return () => sub.unsubscribe();
-  }, [handlerId]);
+  }, [handler, handlerId]);
 
   const stop = events.find(isStopEvent);
   const isRunning = handlerId && !stop;
