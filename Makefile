@@ -20,7 +20,7 @@ format-check:
 
 typecheck:
 	$(info ****************** type checking ******************)
-	uv run ty src/investments_review/
+	uv run ty check src/investments_review/
 
 lint-ui:
 	$(info ****************** linting UI ******************)
