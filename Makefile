@@ -1,6 +1,6 @@
-.PHONY: lint lint-check format format-check typecheck
+.PHONY: lint lint-check format format-check typecheck lint-ui install-ui-deps
 
-all: test lint format typecheck
+all: lint format typecheck lint-ui
 
 lint:
 	$(info ****************** linting ******************)
@@ -22,6 +22,10 @@ typecheck:
 	$(info ****************** type checking ******************)
 	uv run ty check src/investments_review/
 
-lint-ui:
+lint-ui: install-ui-deps
 	$(info ****************** linting UI ******************)
-	cd ui/ && npm run lint
+	cd ui/ && pnpm run lint && cd ..
+
+install-ui-deps:
+	$(info ****************** installing UI deps ******************)
+	cd ui/ && pnpm install --no-frozen-lockfile && cd ..

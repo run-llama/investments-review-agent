@@ -36,9 +36,5 @@ jobs:
         with:
           version: "10.15.1"
 
-      - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
-        working-directory: ui/
-
       - name: Lint
         run: make lint-ui
