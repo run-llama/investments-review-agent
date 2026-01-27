@@ -31,8 +31,14 @@ jobs:
         with:
           node-version: "24.4.0"
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: "10.15.1"
+
       - name: Install dependencies
-        run: npm install
+        run: pnpm install --no-frozen-lockfile
+        working-directory: ui/
 
       - name: Lint
         run: make lint-ui
