@@ -11,6 +11,7 @@ from workflows import Context, Workflow, step
 from workflows.events import Event, StopEvent
 from workflows.resource import Resource
 
+from ..exceptions import SheetParsingError
 from ..shared import FileEvent, FileUploadedEvent, get_llama_cloud_client
 from .llm import OpenAILLM, get_llm
 from .models import InvestmentSheetAnalysis
@@ -87,11 +88,13 @@ class SheetWorkflow(Workflow):
         file_paths = []
         if result.success:
             logging.info("Starting to download Parquet files...")
-            assert result.regions is not None, (
-                "Regions should have been extracted if the job was successfull"
-            )
+            if result.regions is None:
+                raise SheetParsingError(
+                    "Regions should have been extracted if the job was successful"
+                )
             for region in result.regions:
-                assert region.region_id is not None, "Region should have an ID"
+                if region.region_id is None:
+                    raise SheetParsingError("Region should have an ID")
                 parquet_region_resp = (
                     await llama_cloud_client.beta.sheets.get_result_table(
                         region_type=region.region_type,  # type: ignore
