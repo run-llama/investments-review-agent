@@ -9,6 +9,7 @@ from workflows import Context, Workflow, step
 from workflows.events import Event, StopEvent
 from workflows.resource import Resource
 
+from ..exceptions import ClassificationError, ExtractionError
 from ..shared import FileEvent, FileUploadedEvent, get_llama_cloud_client
 from .models import BoardUpdateDeck, ManagementPresentation, rules
 
@@ -81,9 +82,8 @@ class PresentationWorkflow(Workflow):
         logging.info("Finished classification")
         result_item = result.items[0]  # there is only one classified file
         if result_item.result is not None:
-            assert result_item.result.type is not None, (
-                "Classification type should not be None"
-            )
+            if result_item.result.type is None:
+                raise ClassificationError("Classification type should not be None")
             logging.info(f"Classified document as: {result_item.result.type}")
             event = ClassificationEvent(
                 category=result_item.result.type,
@@ -115,7 +115,8 @@ class PresentationWorkflow(Workflow):
         )
         logging.info("Finished extracting details from presentation file")
         if result.data is not None:
-            assert isinstance(result.data, dict), "Data should be a dictionary"
+            if not isinstance(result.data, dict):
+                raise ExtractionError("Data should be a dictionary")
             details = schema.model_validate(result.data)
             return ExtractionEvent(final_result=details.to_string())
         return ExtractionEvent(error="Could not extract details from document")
